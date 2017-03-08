@@ -26,21 +26,21 @@ type Invoke interface {
 }
 
 type State struct {
-	id      GObjectId
+	id      *C.struct_lua_State
 	objects *GObject
 }
 
 func NewState() *State {
 	v := State{}
-	v.id = GObjectId(C.luaL_newstate())
+	v.id = C.luaL_newstate()
 	v.objects = NewGObject()
-	g.Set(v.id, &v)
+	g.Set(GObjectId(v.id), &v)
 	return &v
 }
 
 func (L *State) Close() {
 	C.lua_close(L.id)
-	g.Remove(L.id)
+	g.Remove(GObjectId(L.id))
 }
 
 func (L *State) Openlibs() {
