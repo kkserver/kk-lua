@@ -56,7 +56,13 @@ func (L *State) GetType(idx int) LuaValType {
 }
 
 func (L *State) IsInteger(idx int) bool {
-	return C.lua_isinteger(L.id, C.int(idx)) != 0
+	if L.IsNumber(idx) {
+		v := L.ToNumber(idx)
+		if float64(int64(v)) == v {
+			return true
+		}
+	}
+	return false
 }
 
 func (L *State) IsNumber(idx int) bool {
