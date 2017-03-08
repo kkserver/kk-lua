@@ -1,12 +1,11 @@
 package lua
 
 /*
-#cgo CFLAGS: -I.
 
-#include <lua.h>
-#include <lualib.h>
-#include <lauxlib.h>
-#include <stdlib.h>
+#include "lua.h"
+#include "lualib.h"
+#include "lauxlib.h"
+#include "stdlib.h"
 #include "golua.h"
 */
 import "C"
