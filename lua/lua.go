@@ -1,7 +1,7 @@
 package lua
 
 /*
-#cgo LDFLAGS: -ldl -llua
+#cgo CFLAGS: -I.
 
 #include <lua.h>
 #include <lualib.h>
