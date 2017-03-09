@@ -2,6 +2,10 @@ package lua
 
 /*
 
+#cgo CFLAGS: -I.
+#cgo darwin CFLAGS: -DLUA_USE_MACOSX
+#cgo linux CFLAGS: -DLUA_USE_LINUX
+
 #include "lua.h"
 #include "lualib.h"
 #include "lauxlib.h"
@@ -12,6 +16,7 @@ import "C"
 
 import (
 	"github.com/kkserver/kk-lib/kk/dynamic"
+	"os"
 	"reflect"
 	"unsafe"
 )
@@ -43,7 +48,22 @@ func (L *State) Close() {
 }
 
 func (L *State) Openlibs() {
+
 	C.luaL_openlibs(L.id)
+
+	{
+		v := os.Getenv("LUA_PATH")
+		if v != "" {
+			L.GetGlobal("package")
+			if L.GetType(-1) == LUA_TTABLE {
+				L.PushString("path")
+				L.PushString(v)
+				L.RawSet(-3)
+			}
+			L.Pop(1)
+		}
+	}
+
 }
 
 func (L *State) GetTop() int {
@@ -167,6 +187,12 @@ func (L *State) ToString(idx int) string {
 	var size C.size_t = 0
 	r := C.lua_tolstring(L.id, C.int(idx), &size)
 	return C.GoStringN(r, C.int(size))
+}
+
+func (L *State) GetGlobal(name string) int {
+	Cname := C.CString(name)
+	defer C.free(unsafe.Pointer(Cname))
+	return int(C.lua_getglobal(L.id, Cname))
 }
 
 func (L *State) NewTable() {
