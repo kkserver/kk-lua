@@ -16,7 +16,6 @@ import "C"
 
 import (
 	"github.com/kkserver/kk-lib/kk/dynamic"
-	"os"
 	"reflect"
 	"unsafe"
 )
@@ -50,19 +49,6 @@ func (L *State) Close() {
 func (L *State) Openlibs() {
 
 	C.luaL_openlibs(L.id)
-
-	{
-		v := os.Getenv("LUA_PATH")
-		if v != "" {
-			L.GetGlobal("package")
-			if L.GetType(-1) == LUA_TTABLE {
-				L.PushString("path")
-				L.PushString(v)
-				L.RawSet(-3)
-			}
-			L.Pop(1)
-		}
-	}
 
 }
 
