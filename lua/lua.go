@@ -5,6 +5,7 @@ package lua
 #cgo CFLAGS: -I.
 #cgo darwin CFLAGS: -DLUA_USE_MACOSX
 #cgo linux CFLAGS: -DLUA_USE_LINUX
+#cgo linux LDFLAGS: -lm -ldl
 
 #include "lua.h"
 #include "lualib.h"
