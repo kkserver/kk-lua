@@ -5,25 +5,25 @@
 #include "_cgo_export.h"
 
 static int clua_object_gc(struct lua_State *L) {
-	g_object_delete((uintptr) L);
+	g_object_delete((kk_uintptr) L);
 	return 0;
 }
 
 static int clua_object_get(struct lua_State *L) {
-	return g_object_get((uintptr) L);
+	return g_object_get((kk_uintptr) L);
 }
 
 static int clua_object_set(struct lua_State *L) {
-	return g_object_set((uintptr) L);
+	return g_object_set((kk_uintptr) L);
 }
 
 static int clua_object_call(struct lua_State *L) {
-	return g_object_call((uintptr) L);
+	return g_object_call((kk_uintptr) L);
 }
 
-uintptr clua_newobject(struct lua_State *L) {
+kk_uintptr clua_newobject(struct lua_State *L) {
 	
-	void * v = lua_newuserdata(L,sizeof(uintptr));
+	void * v = lua_newuserdata(L,sizeof(kk_uintptr));
 
 	lua_newtable(L);
 
@@ -41,12 +41,12 @@ uintptr clua_newobject(struct lua_State *L) {
 
 	lua_setmetatable(L,-2);
 
-	return (uintptr) v;
+	return (kk_uintptr) v;
 }
 
-uintptr clua_newfunction(struct lua_State *L) {
+kk_uintptr clua_newfunction(struct lua_State *L) {
 	
-	void * v = lua_newuserdata(L,sizeof(uintptr));
+	void * v = lua_newuserdata(L,sizeof(kk_uintptr));
 
 	lua_newtable(L);
 
@@ -66,7 +66,7 @@ uintptr clua_newfunction(struct lua_State *L) {
 
 	lua_pushcclosure(L, clua_object_call, 1);
 
-	return (uintptr) v;
+	return (kk_uintptr) v;
 }
 
 
